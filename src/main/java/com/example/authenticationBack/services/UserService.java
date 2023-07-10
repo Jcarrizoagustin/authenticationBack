@@ -25,4 +25,10 @@ public class UserService {
         if(userModel.isEmpty()) throw new RuntimeException("El usuarion no se encuentra");
         return UserMapper.modelUserToUserResponseDTO(userModel.get());
     }
+
+    public ModelUser getModelUserById(Long id){
+        Optional<ModelUser> userModel = userRepository.findById(id);
+        if(userModel.isEmpty()) throw new RuntimeException("El usuarion no se encuentra");
+        return userModel.get();
+    }
 }

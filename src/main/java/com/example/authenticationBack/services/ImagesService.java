@@ -1,6 +1,7 @@
 package com.example.authenticationBack.services;
 
 import com.example.authenticationBack.entities.ModelImage;
+import com.example.authenticationBack.entities.ModelUser;
 import com.example.authenticationBack.exceptions.BytesErrorException;
 import com.example.authenticationBack.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import java.util.Optional;
 public class ImagesService {
     @Autowired
     private ImageRepository imageRepository;
+    @Autowired
+    private UserService userService;
 
     private ModelImage convertMultipartFileToModelImage(MultipartFile file){
         ModelImage modelImage = new ModelImage();
@@ -38,13 +41,11 @@ public class ImagesService {
     }
 
 
-    public ModelImage getModelImageById(Long id){
-        Optional<ModelImage> model = imageRepository.findById(id);
-        if(model.isPresent()){
-            return model.get();
-        }else{
-            throw new RuntimeException("Error al recuperar la imagen");
-        }
+    public ModelImage getModelImageByUserId(Long id){
+        ModelUser model = userService.getModelUserById(id);
+        Optional<ModelImage> modelImage = imageRepository.findTop1ByUser(model);
+        if(modelImage.isEmpty()) throw new RuntimeException("Error al recuperar la imagen");
+        return modelImage.get();
     }
 
 

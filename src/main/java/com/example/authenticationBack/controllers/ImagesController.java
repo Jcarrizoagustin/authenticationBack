@@ -25,9 +25,8 @@ public class ImagesController {
 
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> download(@PathVariable Long id){
-        ModelImage image = imagesService.getModelImageById(id);
+        ModelImage image = imagesService.getModelImageByUserId(id);
         byte[] result = image.getBytes();
-
         HttpHeaders headers = new HttpHeaders();
         MediaType media = ManageFormatImage.getMediaTypeForImageType(image.getType());
         headers.setContentType(media);
