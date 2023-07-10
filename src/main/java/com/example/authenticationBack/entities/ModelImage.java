@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
-@Entity(name = "Image")
+@Entity
 @Table(name = "image")
 public class ModelImage {
     @Id
@@ -13,4 +13,10 @@ public class ModelImage {
     private String name;
     private String type;
     private byte[] bytes;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private ModelUser user;
+
+
 }

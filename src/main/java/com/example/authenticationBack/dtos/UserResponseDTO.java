@@ -1,14 +1,13 @@
-package com.example.authenticationBack.entities;
+package com.example.authenticationBack.dtos;
 
 import lombok.Data;
 
 @Data
-public class User {
+public class UserResponseDTO {
     private Long id;
     private String name;
     private String bio;
     private String phone;
     private String email;
-    private String password;
-    private ModelImage image;
+
 }

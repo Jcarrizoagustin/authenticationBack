@@ -11,5 +11,6 @@ public class UserCreateDTO {
     private String bio;
     private String phone;
     private String email;
+    private String password;
     private MultipartFile image;
 }
