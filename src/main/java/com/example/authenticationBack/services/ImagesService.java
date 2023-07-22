@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class ImagesService {
@@ -35,18 +35,20 @@ public class ImagesService {
     }
 
 
-    public ModelImage storeModelImage(MultipartFile file){
+    public void storeModelImage(MultipartFile file, Long id){
         ModelImage model = this.convertMultipartFileToModelImage(file);
-        return this.imageRepository.save(model);
+        ModelUser user = userService.getModelUserById(id);
+        user.addImage(model);
+        userService.storeModelUser(user);
     }
 
 
     public ModelImage getModelImageByUserId(Long id){
         ModelUser model = userService.getModelUserById(id);
-        Optional<ModelImage> modelImage = imageRepository.findTop1ByUser(model);
-        if(modelImage.isEmpty()) throw new RuntimeException("Error al recuperar la imagen");
-        return modelImage.get();
+        List<ModelImage> modelImageList = imageRepository.findAllByUser(model);
+        if(modelImageList.isEmpty()) throw new RuntimeException("Error al recuperar la imagen");
+        int size = modelImageList.size();
+        return modelImageList.get(size - 1);
     }
-
 
 }

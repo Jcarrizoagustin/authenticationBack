@@ -17,9 +17,9 @@ public class ImagesController {
     @Autowired
     private ImagesService imagesService;
 
-    @PostMapping
-    public ResponseEntity<String> upload(@RequestBody MultipartFile image){
-        ModelImage imageSaved = imagesService.storeModelImage(image);
+    @PostMapping("/{id}")
+    public ResponseEntity<String> upload(@RequestBody MultipartFile image, @PathVariable Long id){
+        imagesService.storeModelImage(image,id);
         return ResponseEntity.ok("Imagen cargada con exito");
     }
 

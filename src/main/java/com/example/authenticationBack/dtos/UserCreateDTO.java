@@ -3,8 +3,6 @@ package com.example.authenticationBack.dtos;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-
 @Data
 public class UserCreateDTO {
     private String name;
