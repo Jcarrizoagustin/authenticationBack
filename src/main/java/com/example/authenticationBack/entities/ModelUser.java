@@ -12,7 +12,12 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "model_user")
+@Table(name = "model_user",uniqueConstraints = @UniqueConstraint(
+        name = "uk_email",
+        columnNames = {
+                "email"
+        }
+))
 public class ModelUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +28,11 @@ public class ModelUser implements UserDetails {
 
     private String phone;
 
+
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE,CascadeType.PERSIST}, orphanRemoval = true)
     private List<ModelImage> profileImages = new ArrayList<>();
 
     public void addImage(ModelImage image){

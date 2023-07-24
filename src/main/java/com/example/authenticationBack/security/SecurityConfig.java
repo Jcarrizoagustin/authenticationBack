@@ -33,8 +33,8 @@ public class SecurityConfig {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(HttpMethod.POST,"/api/auth/**").permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers(HttpMethod.POST,"/api/auth/register","/api/auth/login").permitAll()
+                            .anyRequest().authenticated();
                 })
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider);

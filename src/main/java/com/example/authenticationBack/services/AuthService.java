@@ -6,6 +6,8 @@ import com.example.authenticationBack.entities.ModelUser;
 import com.example.authenticationBack.mappers.UserMapper;
 import com.example.authenticationBack.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,17 @@ public class AuthService {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     public TokenResponseDTO login(UserAuthDTO dto){
-        return null;
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(),dto.getPassword()));
+        UserDetails userDetails = userRepository.findByEmail(dto.getEmail()).orElseThrow();
+        String token = jwtService.getToken(userDetails);
+        return new TokenResponseDTO(token);
     }
+
+
 
     public TokenResponseDTO register(UserAuthDTO dto){
         ModelUser modelUser = UserMapper.userRegisterDTOToModelUser(dto);
