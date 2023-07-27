@@ -2,9 +2,12 @@ package com.example.authenticationBack.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,6 +22,7 @@ import java.util.List;
         }
 ))
 public class ModelUser implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,12 +32,13 @@ public class ModelUser implements UserDetails {
 
     private String phone;
 
-
     private String email;
+
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE,CascadeType.PERSIST}, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ModelImage> profileImages = new ArrayList<>();
+
 
     public void addImage(ModelImage image){
         this.profileImages.add(image);
@@ -44,6 +49,8 @@ public class ModelUser implements UserDetails {
         this.profileImages.remove(image);
         image.setUser(null);
     }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

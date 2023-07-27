@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TokenResponseDTO {
     private String token;
+    private String id;
 }

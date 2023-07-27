@@ -27,18 +27,19 @@ public class AuthService {
 
     public TokenResponseDTO login(UserAuthDTO dto){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(),dto.getPassword()));
-        UserDetails userDetails = userRepository.findByEmail(dto.getEmail()).orElseThrow();
+        ModelUser userDetails = userRepository.findByEmail(dto.getEmail()).orElseThrow();
+        //ModelUser modelUser = (ModelUser)userDetails;
         String token = jwtService.getToken(userDetails);
-        return new TokenResponseDTO(token);
+        return new TokenResponseDTO(token,userDetails.getId().toString());
     }
 
 
 
     public TokenResponseDTO register(UserAuthDTO dto){
         ModelUser modelUser = UserMapper.userRegisterDTOToModelUser(dto);
-        userService.storeModelUser(modelUser);
+        ModelUser stored = userService.storeModelUser(modelUser);
         String token = jwtService.getToken(modelUser);
-        return new TokenResponseDTO(token);
+        return new TokenResponseDTO(token,stored.getId().toString());
     }
 
 }

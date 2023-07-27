@@ -18,5 +18,4 @@ public class ModelImage {
     @JoinColumn(name = "user_id", nullable = false)
     private ModelUser user;
 
-
 }

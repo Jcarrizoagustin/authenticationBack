@@ -1,10 +1,8 @@
 package com.example.authenticationBack.controllers;
 
 import com.example.authenticationBack.dtos.UserCreateDTO;
-import com.example.authenticationBack.dtos.UserAuthDTO;
 import com.example.authenticationBack.dtos.UserResponseDTO;
 import com.example.authenticationBack.entities.ModelUser;
-import com.example.authenticationBack.mappers.UserMapper;
 import com.example.authenticationBack.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

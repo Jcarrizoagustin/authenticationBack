@@ -9,6 +9,7 @@ import com.example.authenticationBack.mappers.ModelImageMapper;
 import com.example.authenticationBack.mappers.UserMapper;
 import com.example.authenticationBack.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,9 @@ public class UserService {
         modelUser.setBio(dto.getBio());
         modelUser.setPhone(dto.getPhone());
         modelUser.setEmail(dto.getEmail());
-        modelUser.setPassword(dto.getPassword());
+        if(dto.getPassword()!=null){
+            modelUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
         if(dto.getImage() != null){
             ModelImage image = ModelImageMapper.MultipartFileToModelImage(dto.getImage());
             modelUser.addImage(image);
@@ -72,6 +75,7 @@ public class UserService {
     private boolean checkCredentials(String password, ModelUser user){
         return user.getPassword().equals(password);
     }
+
 
 
 }
