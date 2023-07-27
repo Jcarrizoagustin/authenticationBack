@@ -35,7 +35,6 @@ public class UserMapper {
     public static ModelUser userRegisterDTOToModelUser(UserAuthDTO dto){
         ModelUser modelUser = new ModelUser();
         modelUser.setEmail(dto.getEmail());
-        //TODO password will be encrypted
         modelUser.setPassword(dto.getPassword());
         return modelUser;
     }
