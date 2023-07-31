@@ -3,6 +3,7 @@ package com.example.authenticationBack.services;
 import com.example.authenticationBack.entities.ModelImage;
 import com.example.authenticationBack.entities.ModelUser;
 import com.example.authenticationBack.exceptions.BytesErrorException;
+import com.example.authenticationBack.exceptions.NotFoundException;
 import com.example.authenticationBack.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class ImagesService {
     public ModelImage getModelImageByUserId(Long id){
         ModelUser model = userService.getModelUserById(id);
         List<ModelImage> modelImageList = imageRepository.findAllByUser(model);
-        if(modelImageList.isEmpty()) throw new RuntimeException("Error al recuperar la imagen");
+        if(modelImageList.isEmpty()) throw new NotFoundException("No existe imagen de perfil");
         int size = modelImageList.size();
         return modelImageList.get(size - 1);
     }

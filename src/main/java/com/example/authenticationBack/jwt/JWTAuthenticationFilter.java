@@ -1,5 +1,6 @@
 package com.example.authenticationBack.jwt;
 
+import com.example.authenticationBack.exceptions.BadRequestException;
 import com.example.authenticationBack.services.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -45,6 +46,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                         userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            }else{
+                throw new BadRequestException("El token no es válido");
             }
         }
         filterChain.doFilter(request,response);

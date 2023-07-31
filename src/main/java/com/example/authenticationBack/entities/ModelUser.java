@@ -28,6 +28,7 @@ public class ModelUser implements UserDetails {
     private String bio;
 
     private String phone;
+    @Column(nullable = false)
 
     private String email;
 
