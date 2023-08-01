@@ -40,9 +40,8 @@ public class ImagesService {
         ModelImage model = this.convertMultipartFileToModelImage(file);
         ModelUser user = userService.getModelUserById(id);
         user.addImage(model);
-        userService.storeModelUser(user);
+        userService.storeModelUserWithoutEncryptPassword(user);
     }
-
 
     public ModelImage getModelImageByUserId(Long id){
         ModelUser model = userService.getModelUserById(id);

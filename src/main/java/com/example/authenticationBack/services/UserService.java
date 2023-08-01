@@ -44,6 +44,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public void storeModelUserWithoutEncryptPassword(ModelUser user){
+        userRepository.save(user);
+    }
+
     public UserResponseDTO updateUser(UserUpdateDTO dto, Long id){
         ModelUser modelUser = this.updateModelUser(dto,id);
         ModelUser updatedUser = userRepository.save(modelUser);
@@ -64,7 +68,7 @@ public class UserService {
         if(dto.getEmail() != null && dto.getEmail().length() > 0){
             modelUser.setEmail(dto.getEmail());
         }
-        if(dto.getPassword()!=null && dto.getPassword().length() > 0){
+        if(dto.getPassword() != null && dto.getPassword().length() > 0){
             modelUser.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
         return modelUser;
