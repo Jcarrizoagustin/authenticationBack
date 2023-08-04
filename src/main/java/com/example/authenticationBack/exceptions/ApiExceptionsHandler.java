@@ -5,6 +5,7 @@ import io.jsonwebtoken.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,6 +43,8 @@ public class ApiExceptionsHandler {
     @ExceptionHandler({
             ConflictException.class,
             DataIntegrityViolationException.class,
+            AuthenticationCredentialsNotFoundException.class,
+            BadCredentialsException.class
     })
     @ResponseBody
     public ErrorMessage conflict(HttpServletRequest request, Exception exception){
@@ -50,8 +53,8 @@ public class ApiExceptionsHandler {
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({
-            UnauthorizedException.class,
-            BadCredentialsException.class
+            UnauthorizedException.class
+
     })
     @ResponseBody
     public ErrorMessage unauthorized(HttpServletRequest request, Exception exception){

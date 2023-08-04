@@ -2,6 +2,7 @@ package com.example.authenticationBack.security;
 
 import com.example.authenticationBack.jwt.JWTAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,6 +27,8 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
     //TODO: implement beans for security and manage
+    @Value("${security.allow.origin}")
+    private String allowOrigin;
 
     @Autowired
     private JWTAuthenticationFilter authenticationFilter;
@@ -54,7 +57,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration cc = new CorsConfiguration();
         cc.setAllowedHeaders(List.of("Authorization","Content-Type","Authentication"));
-        cc.setAllowedOrigins(List.of("http://localhost:5173"));
+        cc.setAllowedOrigins(List.of(allowOrigin));
         cc.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
         cc.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource url = new UrlBasedCorsConfigurationSource();

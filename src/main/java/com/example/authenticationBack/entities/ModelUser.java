@@ -2,12 +2,13 @@ package com.example.authenticationBack.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -37,7 +38,8 @@ public class ModelUser implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ModelImage> profileImages = new ArrayList<>();
 
-
+    @CreatedDate
+    private Date createdDate;
     public void addImage(ModelImage image){
         this.profileImages.add(image);
         image.setUser(this);
@@ -78,5 +80,14 @@ public class ModelUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ModelUser{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

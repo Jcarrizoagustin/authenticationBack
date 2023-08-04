@@ -6,6 +6,8 @@ import com.example.authenticationBack.entities.ModelUser;
 import com.example.authenticationBack.exceptions.ConflictException;
 import com.example.authenticationBack.mappers.UserMapper;
 import com.example.authenticationBack.repositories.UserRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-
+    private final Log log = LogFactory.getLog(this.getClass());
     @Autowired
     private UserRepository userRepository;
 
@@ -37,9 +39,10 @@ public class AuthService {
     public TokenResponseDTO register(UserAuthDTO dto){
         ModelUser modelUser = UserMapper.userRegisterDTOToModelUser(dto);
         if(userRepository.existsByEmail(modelUser.getEmail())){
-            throw new ConflictException("El usuario con email " + modelUser.getEmail() + " ya se encuentra registrado");
+            throw new ConflictException("The email " + modelUser.getEmail() + " is already registered");
         }
         ModelUser stored = userService.storeModelUser(modelUser);
+        log.info("Usuario creado: " + stored.toString());
         String token = jwtService.getToken(modelUser);
         return new TokenResponseDTO(token,stored.getId().toString());
     }
