@@ -1,6 +1,7 @@
 package com.example.authenticationBack.exceptions;
 
 public class ErrorMessage {
+
     private final String exception;
     private final String message;
     private final String path;

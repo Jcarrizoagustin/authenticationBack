@@ -4,6 +4,7 @@ import com.example.authenticationBack.dtos.TokenResponseDTO;
 import com.example.authenticationBack.dtos.UserAuthDTO;
 import com.example.authenticationBack.entities.ModelUser;
 import com.example.authenticationBack.exceptions.ConflictException;
+import com.example.authenticationBack.exceptions.UserNotFoundException;
 import com.example.authenticationBack.mappers.UserMapper;
 import com.example.authenticationBack.repositories.UserRepository;
 import org.apache.commons.logging.Log;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -29,9 +32,12 @@ public class AuthService {
 
     public TokenResponseDTO login(UserAuthDTO dto){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(),dto.getPassword()));
-        ModelUser userDetails = userRepository.findByEmail(dto.getEmail()).orElseThrow();
-        String token = jwtService.getToken(userDetails);
-        return new TokenResponseDTO(token,userDetails.getId().toString());
+        Optional<ModelUser> userDetails = userRepository.findByEmail(dto.getEmail());
+        if(userDetails.isEmpty()){
+            throw new UserNotFoundException("The user " + dto.getEmail() + " is not registered");
+        }
+        String token = jwtService.getToken(userDetails.get());
+        return new TokenResponseDTO(token,userDetails.get().getId().toString());
     }
 
 
